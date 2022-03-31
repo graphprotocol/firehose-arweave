@@ -9,6 +9,7 @@ start:
     mindreader-node-path: "/usr/local/bin/thegarii"
     # debugging
     mindreader-node-debug-deep-mind: true
+    mindreader-node-log-to-zap: true
     # Indicates to the mindreader-node to skip writing individual one block files and merge the block data into 100-blocks merged files
     # mindreader-node-merge-and-store-directly: true
     # Flags that will be added to the dummy chain process command

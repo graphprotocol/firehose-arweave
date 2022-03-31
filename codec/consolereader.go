@@ -191,7 +191,7 @@ func (r *ConsoleReader) block(params []string) (*pbcodec.Block, error) {
 	}
 
 	// logging
-	zlog.Info("console reader read block",
+	zlog.Debug("console reader read block",
 		zap.Uint64("height", r.ctx.currentBlock.Height),
 		zap.String("hash", base64url.Encode(r.ctx.currentBlock.Hash)),
 		zap.String("prev_hash", base64url.Encode(r.ctx.currentBlock.PreviousBlock)),
