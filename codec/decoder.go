@@ -18,8 +18,8 @@ import (
 	"fmt"
 	"google.golang.org/protobuf/proto"
 
+	pbcodec "github.com/ChainSafe/firehose-arweave/pb/cs/arweave/codec/v1"
 	"github.com/streamingfast/bstream"
-	pbcodec "github.com/ChainSafe/firehose-arweave/pb/sf/arweave/codec/v1"
 	pbbstream "github.com/streamingfast/pbgo/sf/bstream/v1"
 )
 

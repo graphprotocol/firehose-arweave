@@ -20,11 +20,11 @@ import (
 	"math"
 	"time"
 
+	"github.com/ChainSafe/firehose-arweave/codec"
+	pbcodec "github.com/ChainSafe/firehose-arweave/pb/cs/arweave/codec/v1"
 	"github.com/spf13/cobra"
 	"github.com/streamingfast/bstream"
 	"github.com/streamingfast/bstream/blockstream"
-	"github.com/ChainSafe/firehose-arweave/codec"
-	pbcodec "github.com/ChainSafe/firehose-arweave/pb/sf/arweave/codec/v1"
 	nodeManager "github.com/streamingfast/node-manager"
 	"github.com/streamingfast/node-manager/mindreader"
 	"go.uber.org/zap"

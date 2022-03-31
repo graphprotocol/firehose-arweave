@@ -17,10 +17,10 @@ package tools
 import (
 	"fmt"
 
+	pbcodec "github.com/ChainSafe/firehose-arweave/pb/cs/arweave/codec/v1"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/streamingfast/bstream"
-	pbcodec "github.com/ChainSafe/firehose-arweave/pb/sf/arweave/codec/v1"
 	sftools "github.com/streamingfast/sf-tools"
 )
 

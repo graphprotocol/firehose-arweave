@@ -21,11 +21,11 @@ import (
 	"io"
 	"strconv"
 
+	pbcodec "github.com/ChainSafe/firehose-arweave/pb/cs/arweave/codec/v1"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/streamingfast/bstream"
 	"github.com/streamingfast/dstore"
-	pbcodec "github.com/ChainSafe/firehose-arweave/pb/sf/arweave/codec/v1"
 	"go.uber.org/zap"
 )
 
