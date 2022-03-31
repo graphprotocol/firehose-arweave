@@ -5,11 +5,13 @@ import (
 	"fmt"
 	"io"
 	// "math/big"
+	"encoding/hex"
 	"strconv"
 	"strings"
 	"time"
 
 	pbcodec "github.com/ChainSafe/firehose-arweave/pb/cs/arweave/codec/v1"
+	"github.com/golang/protobuf/proto"
 	"go.uber.org/zap"
 )
 
@@ -94,13 +96,8 @@ func (r *ConsoleReader) Read() (out interface{}, err error) {
 }
 
 const (
-	LogPrefix     = "DMLOG"
-	LogBeginBlock = "BLOCK_BEGIN"
-	LogBeingTrx   = "BEGIN_TRX"
-	LogBeginEvent = "TRX_BEGIN_EVENT"
-	LogEventAttr  = "TRX_EVENT_ATTR"
-	LogEndTrx     = "END_TRX"
-	LogEndBlock   = "BLOCK_END"
+	LogPrefix = "DMLOG"
+	LogBlock  = "BLOCK"
 )
 
 func (r *ConsoleReader) next() (out interface{}, err error) {
@@ -115,16 +112,8 @@ func (r *ConsoleReader) next() (out interface{}, err error) {
 		}
 
 		switch tokens[0] {
-		case LogBeginBlock:
-			err = r.blockBegin(tokens[1:])
-		// case LogBeingTrx:
-		// 	err = r.ctx.trxBegin(tokens[1:])
-		// case LogBeginEvent:
-		// 	err = r.ctx.eventBegin(tokens[1:])
-		// case LogEventAttr:
-		// 	err = r.ctx.eventAttr(tokens[1:])
-		// case LogEndBlock:
-		// 	return r.ctx.readBlockEnd(tokens[1:])
+		case LogBlock:
+			return r.block(tokens[1:])
 		default:
 			if tracer.Enabled() {
 				zlog.Debug("skipping unknown deep mind log line", zap.String("line", line))
@@ -166,20 +155,34 @@ func (r *ConsoleReader) buildScanner(reader io.Reader) *bufio.Scanner {
 }
 
 // Format:
-// DMLOG BLOCK_BEGIN <NUM>
-func (r *ConsoleReader) blockBegin(params []string) error {
-	if err := validateChunk(params, 1); err != nil {
-		return fmt.Errorf("invalid log line length: %w", err)
+// DMLOG BLOCK <HEIGHT> <ENCODED_BLOCK>
+func (r *ConsoleReader) block(params []string) (*pbcodec.Block, error) {
+	if err := validateChunk(params, 2); err != nil {
+		return nil, fmt.Errorf("invalid log line length: %w", err)
 	}
 
+	// <HEIGHT>
+	//
+	// parse block height
 	blockHeight, err := strconv.ParseUint(params[0], 10, 64)
 	if err != nil {
-		return fmt.Errorf("invalid block num: %w", err)
+		return nil, fmt.Errorf("invalid block num: %w", err)
 	}
 
-	//Push new block meta
-	r.ctx = newContext(blockHeight)
-	return nil
+	// <ENCODED_BLOCK>
+	//
+	// hex decode block
+	bytes, err := hex.DecodeString(params[1])
+	if err != nil {
+		return nil, fmt.Errorf("invalid encoded block: %w", err)
+	}
+
+	// decode bytes to Block
+	if proto.Unmarshal(bytes, r.ctx.currentBlock) != nil {
+		return nil, fmt.Errorf("invalid encoded block: %w", err)
+	}
+
+	return r.ctx.currentBlock, nil
 }
 
 // // Format:

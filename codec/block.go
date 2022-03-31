@@ -16,11 +16,11 @@ func BlockFromProto(b *pbcodec.Block) (*bstream.Block, error) {
 	}
 
 	block := &bstream.Block{
-		Id:             b.ID(),
-		Number:         b.Number(),
-		PreviousId:     b.PreviousID(),
-		Timestamp:      b.Time(),
-		LibNum:         b.Number() - 1,
+		Id:             b.Hash(),
+		Number:         b.Height(),
+		PreviousId:     b.PreviousBlock(),
+		Timestamp:      b.Timestamp(),
+		LibNum:         b.Height() - 1,
 		PayloadKind:    pbbstream.Protocol_UNKNOWN,
 		PayloadVersion: 1,
 	}

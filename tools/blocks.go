@@ -121,12 +121,12 @@ func printBlocksE(cmd *cobra.Command, args []string) error {
 			block.Num(),
 			block.ID()[0:7],
 			block.PreviousID()[0:7],
-			len(arweaveBlock.Transactions),
+			len(arweaveBlock.Txs),
 		)
 		if printTransactions {
 			fmt.Println("- Transactions: ")
-			for _, t := range arweaveBlock.Transactions {
-				fmt.Println("  * ", t.Hash)
+			for _, t := range arweaveBlock.Txs {
+				fmt.Println("  * ", t.Id)
 			}
 			fmt.Println()
 		}
@@ -196,12 +196,12 @@ func printBlockE(cmd *cobra.Command, args []string) error {
 			block.Num(),
 			block.ID()[0:7],
 			block.PreviousID()[0:7],
-			len(arweaveBlock.Transactions),
+			len(arweaveBlock.Txs),
 		)
 		if printTransactions {
 			fmt.Println("- Transactions: ")
-			for _, t := range arweaveBlock.Transactions {
-				fmt.Printf("  * %s\n", t.Hash)
+			for _, t := range arweaveBlock.Txs {
+				fmt.Printf("  * %s\n", t.Id)
 			}
 		}
 		continue
