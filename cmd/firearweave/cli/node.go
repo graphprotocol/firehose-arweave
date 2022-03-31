@@ -22,13 +22,13 @@ import (
 )
 
 var nodeLogger, _ = logging.PackageLogger("node", "github.com/ChainSafe/firehose-arweave/node")
-var nodeDummyChainLogger, _ = logging.PackageLogger("node.dummy-chain", "github.com/ChainSafe/firehose-arweave/node/dummy-chain", DefaultLevelInfo)
+var nodeDummyChainLogger, _ = logging.PackageLogger("node.arweave", "github.com/ChainSafe/firehose-arweave/node/dummy-chain", DefaultLevelInfo)
 
 var mindreaderLogger, _ = logging.PackageLogger("mindreader", "github.com/ChainSafe/firehose-arweave/mindreader")
-var mindreaderDummyChainLogger, _ = logging.PackageLogger("mindreader.dummy-chain", "github.com/ChainSafe/firehose-arweave/mindreader/dummy-chain", DefaultLevelInfo)
+var mindreaderDummyChainLogger, _ = logging.PackageLogger("mindreader.arweave", "github.com/ChainSafe/firehose-arweave/mindreader/dummy-chain", DefaultLevelInfo)
 
 func registerCommonNodeFlags(cmd *cobra.Command, flagPrefix string, managerAPIAddr string) {
-	cmd.Flags().String(flagPrefix+"path", "dummychain", "Command that will be launched by the node manager")
+	cmd.Flags().String(flagPrefix+"path", "thegarii", "Command that will be launched by the node manager")
 	cmd.Flags().String(flagPrefix+"data-dir", "{sf-data-dir}/{node-role}/data", "Directory for node data ({node-role} is either mindreader, peering or dev-miner)")
 	cmd.Flags().Bool(flagPrefix+"debug-deep-mind", false, "[DEV] Prints deep mind instrumentation logs to standard output, should be use for debugging purposes only")
 	cmd.Flags().Bool(flagPrefix+"log-to-zap", true, "Enable all node logs to transit into node's logger directly, when false, prints node logs directly to stdout")

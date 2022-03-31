@@ -31,7 +31,7 @@ type Superviser struct {
 }
 
 func (s *Superviser) GetName() string {
-	return "dummy-chain"
+	return "arweave"
 }
 
 func NewSuperviser(
