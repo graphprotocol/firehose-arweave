@@ -1,10 +1,10 @@
 package codec
 
 import (
+	"encoding/hex"
 	"fmt"
 
 	pbcodec "github.com/ChainSafe/firehose-arweave/pb/cs/arweave/codec/v1"
-	"github.com/dvsekhvalnov/jose2go/base64url"
 	"github.com/streamingfast/bstream"
 	pbbstream "github.com/streamingfast/pbgo/sf/bstream/v1"
 	"google.golang.org/protobuf/proto"
@@ -17,9 +17,9 @@ func BlockFromProto(b *pbcodec.Block) (*bstream.Block, error) {
 	}
 
 	block := &bstream.Block{
-		Id:             base64url.Encode(b.Hash),
+		Id:             hex.EncodeToString(b.Hash),
 		Number:         b.Height,
-		PreviousId:     base64url.Encode(b.PreviousBlock),
+		PreviousId:     hex.EncodeToString(b.PreviousBlock),
 		Timestamp:      b.Timestamp.AsTime(),
 		LibNum:         b.Height - 1,
 		PayloadKind:    pbbstream.Protocol_UNKNOWN,

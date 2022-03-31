@@ -40,7 +40,7 @@ func firehoseCmdStartE(cmd *cobra.Command, args []string) (err error) {
 	rootLog.Debug("firearweave binary started", zap.String("data_dir", dataDir))
 
 	configFile := viper.GetString("global-config-file")
-	rootLog.Info(fmt.Sprintf("starting Firehose on Acme with config file '%s'", configFile))
+	rootLog.Info(fmt.Sprintf("starting Firehose on Arweave with config file '%s'", configFile))
 
 	err = Start(dataDir, args)
 	if err != nil {

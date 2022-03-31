@@ -32,7 +32,7 @@ func registerCommonNodeFlags(cmd *cobra.Command, flagPrefix string, managerAPIAd
 	cmd.Flags().String(flagPrefix+"data-dir", "{sf-data-dir}/{node-role}/data", "Directory for node data ({node-role} is either mindreader, peering or dev-miner)")
 	cmd.Flags().Bool(flagPrefix+"debug-deep-mind", false, "[DEV] Prints deep mind instrumentation logs to standard output, should be use for debugging purposes only")
 	cmd.Flags().Bool(flagPrefix+"log-to-zap", true, "Enable all node logs to transit into node's logger directly, when false, prints node logs directly to stdout")
-	cmd.Flags().String(flagPrefix+"manager-api-addr", managerAPIAddr, "Acme node manager API address")
+	cmd.Flags().String(flagPrefix+"manager-api-addr", managerAPIAddr, "Arweave node manager API address")
 	cmd.Flags().Duration(flagPrefix+"readiness-max-latency", 30*time.Second, "Determine the maximum head block latency at which the instance will be determined healthy. Some chains have more regular block production than others.")
 	cmd.Flags().String(flagPrefix+"arguments", "", "If not empty, overrides the list of default node arguments (computed from node type and role). Start with '+' to append to default args instead of replacing. ")
 }
@@ -47,8 +47,8 @@ func registerNode(kind string, extraFlagRegistration func(cmd *cobra.Command) er
 
 	launcher.RegisterApp(rootLog, &launcher.AppDef{
 		ID:          app,
-		Title:       fmt.Sprintf("Acme Node (%s)", kind),
-		Description: fmt.Sprintf("Acme %s node with built-in operational manager", kind),
+		Title:       fmt.Sprintf("Arweave Node (%s)", kind),
+		Description: fmt.Sprintf("Arweave %s node with built-in operational manager", kind),
 		RegisterFlags: func(cmd *cobra.Command) error {
 			registerCommonNodeFlags(cmd, flagPrefix, managerAPIaddr)
 			extraFlagRegistration(cmd)
@@ -205,7 +205,7 @@ type nodeArgsByRole map[string]string
 
 func buildNodeArguments(nodeDataDir, nodeRole string, args string) ([]string, error) {
 	typeRoles := nodeArgsByRole{
-		"mindreader": "console",
+		"mindreader": "-B 20 console",
 	}
 
 	argsString, ok := typeRoles[nodeRole]
