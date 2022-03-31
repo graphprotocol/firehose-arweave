@@ -21,11 +21,11 @@ import (
 	"io"
 	"strconv"
 
+	pbcodec "github.com/ChainSafe/firehose-arweave/pb/sf/arweave/type/v1"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/streamingfast/bstream"
 	"github.com/streamingfast/dstore"
-	pbcodec "github.com/streamingfast/firehose-acme/pb/sf/acme/codec/v1"
 	"go.uber.org/zap"
 )
 
@@ -115,18 +115,18 @@ func printBlocksE(cmd *cobra.Command, args []string) error {
 
 		seenBlockCount++
 
-		acmeBlock := block.ToProtocol().(*pbcodec.Block)
+		arweaveBlock := block.ToProtocol().(*pbcodec.Block)
 
 		fmt.Printf("Block #%d (%s) (prev: %s): %d transactions\n",
 			block.Num(),
 			block.ID()[0:7],
 			block.PreviousID()[0:7],
-			len(acmeBlock.Transactions),
+			len(arweaveBlock.Txs),
 		)
 		if printTransactions {
 			fmt.Println("- Transactions: ")
-			for _, t := range acmeBlock.Transactions {
-				fmt.Println("  * ", t.Hash)
+			for _, t := range arweaveBlock.Txs {
+				fmt.Println("  * ", t.Id)
 			}
 			fmt.Println()
 		}
@@ -190,18 +190,18 @@ func printBlockE(cmd *cobra.Command, args []string) error {
 			)
 			continue
 		}
-		acmeBlock := block.ToProtocol().(*pbcodec.Block)
+		arweaveBlock := block.ToProtocol().(*pbcodec.Block)
 
 		fmt.Printf("Block #%d (%s) (prev: %s): %d transactions\n",
 			block.Num(),
 			block.ID()[0:7],
 			block.PreviousID()[0:7],
-			len(acmeBlock.Transactions),
+			len(arweaveBlock.Txs),
 		)
 		if printTransactions {
 			fmt.Println("- Transactions: ")
-			for _, t := range acmeBlock.Transactions {
-				fmt.Printf("  * %s\n", t.Hash)
+			for _, t := range arweaveBlock.Txs {
+				fmt.Printf("  * %s\n", t.Id)
 			}
 		}
 		continue

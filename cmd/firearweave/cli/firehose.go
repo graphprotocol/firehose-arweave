@@ -21,7 +21,7 @@ var headBlockNumMetric = metricset.NewHeadBlockNumber("firehose")
 var headTimeDriftmetric = metricset.NewHeadTimeDrift("firehose")
 
 func init() {
-	appLogger, _ := logging.PackageLogger("firehose", "github.com/streamingfast/firehose-acme/firehose")
+	appLogger, _ := logging.PackageLogger("firehose", "github.com/ChainSafe/firehose-arweave/firehose")
 
 	launcher.RegisterApp(rootLog, &launcher.AppDef{
 		ID:          "firehose",

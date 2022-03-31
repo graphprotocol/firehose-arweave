@@ -1,10 +1,11 @@
-module github.com/streamingfast/firehose-acme
+module github.com/ChainSafe/firehose-arweave
 
 go 1.16
 
 require (
 	github.com/ShinyTrinkets/overseer v0.3.0
 	github.com/abourget/llerrgroup v0.2.0 // indirect
+	github.com/dvsekhvalnov/jose2go v1.5.0
 	github.com/golang/protobuf v1.5.2
 	github.com/spf13/cobra v1.2.1
 	github.com/spf13/viper v1.8.1
@@ -33,3 +34,5 @@ require (
 )
 
 replace github.com/ShinyTrinkets/overseer => github.com/streamingfast/overseer v0.2.1-0.20210326144022-ee491780e3ef
+
+replace github.com/ChainSafe/firehose-arweave => /home/clearloop/firehose-arweave

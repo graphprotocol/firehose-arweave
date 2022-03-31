@@ -14,7 +14,7 @@ import (
 // A simple regex is going to identify the level of the line and turn it into our internal level value.
 //
 // You **must** adapt this line to fit with the log lines of your chain. For example, the dummy blockchain we
-// instrumented in `firehose-acme`, log lines look like:
+// instrumented in `firehose-arweave`, log lines look like:
 //
 //    time="2022-03-04T12:49:34-05:00" level=info msg="initializing node"
 //

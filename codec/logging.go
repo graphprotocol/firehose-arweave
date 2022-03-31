@@ -18,4 +18,4 @@ import (
 	"github.com/streamingfast/logging"
 )
 
-var zlog, tracer = logging.PackageLogger("codec", "github.com/streamingfast/firehose-acme/codec")
+var zlog, tracer = logging.PackageLogger("codec", "github.com/ChainSafe/firehose-arweave/codec")

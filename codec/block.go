@@ -1,10 +1,11 @@
 package codec
 
 import (
+	"encoding/hex"
 	"fmt"
 
+	pbcodec "github.com/ChainSafe/firehose-arweave/pb/sf/arweave/type/v1"
 	"github.com/streamingfast/bstream"
-	pbcodec "github.com/streamingfast/firehose-acme/pb/sf/acme/codec/v1"
 	pbbstream "github.com/streamingfast/pbgo/sf/bstream/v1"
 	"google.golang.org/protobuf/proto"
 )
@@ -16,11 +17,11 @@ func BlockFromProto(b *pbcodec.Block) (*bstream.Block, error) {
 	}
 
 	block := &bstream.Block{
-		Id:             b.ID(),
-		Number:         b.Number(),
-		PreviousId:     b.PreviousID(),
-		Timestamp:      b.Time(),
-		LibNum:         b.Number() - 1,
+		Id:             hex.EncodeToString(b.Hash),
+		Number:         b.Height,
+		PreviousId:     hex.EncodeToString(b.PreviousBlock),
+		Timestamp:      b.Timestamp.AsTime(),
+		LibNum:         b.Height - 1,
 		PayloadKind:    pbbstream.Protocol_UNKNOWN,
 		PayloadVersion: 1,
 	}

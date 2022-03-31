@@ -3,7 +3,7 @@
 ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 clean=
-sfnear="$ROOT/../fireacme"
+sfnear="$ROOT/../firearweave"
 
 main() {
   pushd "$ROOT" &> /dev/null
