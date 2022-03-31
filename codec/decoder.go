@@ -19,7 +19,7 @@ import (
 	"google.golang.org/protobuf/proto"
 
 	"github.com/streamingfast/bstream"
-	pbcodec "github.com/streamingfast/firehose-acme/pb/sf/acme/codec/v1"
+	pbcodec "github.com/ChainSafe/firehose-arweave/pb/sf/arweave/codec/v1"
 	pbbstream "github.com/streamingfast/pbgo/sf/bstream/v1"
 )
 

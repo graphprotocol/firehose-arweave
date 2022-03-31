@@ -5,11 +5,11 @@ import (
 	"strings"
 	"time"
 
+	"github.com/ChainSafe/firehose-arweave/nodemanager"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/streamingfast/bstream/blockstream"
 	"github.com/streamingfast/dlauncher/launcher"
-	"github.com/streamingfast/firehose-acme/nodemanager"
 	"github.com/streamingfast/logging"
 	nodeManager "github.com/streamingfast/node-manager"
 	nodeManagerApp "github.com/streamingfast/node-manager/app/node_manager2"
@@ -21,11 +21,11 @@ import (
 	"google.golang.org/grpc"
 )
 
-var nodeLogger, _ = logging.PackageLogger("node", "github.com/streamingfast/firehose-acme/node")
-var nodeDummyChainLogger, _ = logging.PackageLogger("node.dummy-chain", "github.com/streamingfast/firehose-acme/node/dummy-chain", DefaultLevelInfo)
+var nodeLogger, _ = logging.PackageLogger("node", "github.com/ChainSafe/firehose-arweave/node")
+var nodeDummyChainLogger, _ = logging.PackageLogger("node.dummy-chain", "github.com/ChainSafe/firehose-arweave/node/dummy-chain", DefaultLevelInfo)
 
-var mindreaderLogger, _ = logging.PackageLogger("mindreader", "github.com/streamingfast/firehose-acme/mindreader")
-var mindreaderDummyChainLogger, _ = logging.PackageLogger("mindreader.dummy-chain", "github.com/streamingfast/firehose-acme/mindreader/dummy-chain", DefaultLevelInfo)
+var mindreaderLogger, _ = logging.PackageLogger("mindreader", "github.com/ChainSafe/firehose-arweave/mindreader")
+var mindreaderDummyChainLogger, _ = logging.PackageLogger("mindreader.dummy-chain", "github.com/ChainSafe/firehose-arweave/mindreader/dummy-chain", DefaultLevelInfo)
 
 func registerCommonNodeFlags(cmd *cobra.Command, flagPrefix string, managerAPIAddr string) {
 	cmd.Flags().String(flagPrefix+"path", "dummychain", "Command that will be launched by the node manager")
@@ -205,7 +205,7 @@ type nodeArgsByRole map[string]string
 
 func buildNodeArguments(nodeDataDir, nodeRole string, args string) ([]string, error) {
 	typeRoles := nodeArgsByRole{
-		"mindreader": "start --store-dir={node-data-dir} {extra-arg}",
+		"mindreader": "console",
 	}
 
 	argsString, ok := typeRoles[nodeRole]

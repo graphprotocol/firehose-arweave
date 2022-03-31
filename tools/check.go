@@ -20,7 +20,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/streamingfast/bstream"
-	pbcodec "github.com/streamingfast/firehose-acme/pb/sf/acme/codec/v1"
+	pbcodec "github.com/ChainSafe/firehose-arweave/pb/sf/arweave/codec/v1"
 	sftools "github.com/streamingfast/sf-tools"
 )
 

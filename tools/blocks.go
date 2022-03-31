@@ -25,7 +25,7 @@ import (
 	"github.com/spf13/viper"
 	"github.com/streamingfast/bstream"
 	"github.com/streamingfast/dstore"
-	pbcodec "github.com/streamingfast/firehose-acme/pb/sf/acme/codec/v1"
+	pbcodec "github.com/ChainSafe/firehose-arweave/pb/sf/arweave/codec/v1"
 	"go.uber.org/zap"
 )
 
@@ -115,17 +115,17 @@ func printBlocksE(cmd *cobra.Command, args []string) error {
 
 		seenBlockCount++
 
-		acmeBlock := block.ToProtocol().(*pbcodec.Block)
+		arweaveBlock := block.ToProtocol().(*pbcodec.Block)
 
 		fmt.Printf("Block #%d (%s) (prev: %s): %d transactions\n",
 			block.Num(),
 			block.ID()[0:7],
 			block.PreviousID()[0:7],
-			len(acmeBlock.Transactions),
+			len(arweaveBlock.Transactions),
 		)
 		if printTransactions {
 			fmt.Println("- Transactions: ")
-			for _, t := range acmeBlock.Transactions {
+			for _, t := range arweaveBlock.Transactions {
 				fmt.Println("  * ", t.Hash)
 			}
 			fmt.Println()
@@ -190,17 +190,17 @@ func printBlockE(cmd *cobra.Command, args []string) error {
 			)
 			continue
 		}
-		acmeBlock := block.ToProtocol().(*pbcodec.Block)
+		arweaveBlock := block.ToProtocol().(*pbcodec.Block)
 
 		fmt.Printf("Block #%d (%s) (prev: %s): %d transactions\n",
 			block.Num(),
 			block.ID()[0:7],
 			block.PreviousID()[0:7],
-			len(acmeBlock.Transactions),
+			len(arweaveBlock.Transactions),
 		)
 		if printTransactions {
 			fmt.Println("- Transactions: ")
-			for _, t := range acmeBlock.Transactions {
+			for _, t := range arweaveBlock.Transactions {
 				fmt.Printf("  * %s\n", t.Hash)
 			}
 		}

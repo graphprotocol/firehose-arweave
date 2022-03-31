@@ -19,14 +19,14 @@ import (
 	"go.uber.org/zap"
 )
 
-var rootLog, _ = logging.RootLogger("fireacme", "github.com/streamingfast/firehose-acme/cmd/fireacme/cli")
+var rootLog, _ = logging.RootLogger("firearweave", "github.com/ChainSafe/firehose-arweave/cmd/firearweave/cli")
 
-var RootCmd = &cobra.Command{Use: "fireacme", Short: "Acme on StreamingFast"}
+var RootCmd = &cobra.Command{Use: "firearweave", Short: "Acme on StreamingFast"}
 var allFlags = make(map[string]bool) // used as global because of async access to cobra init functions
 
 func Main() {
 	cobra.OnInitialize(func() {
-		allFlags = flags.AutoBind(RootCmd, "fireacme")
+		allFlags = flags.AutoBind(RootCmd, "firearweave")
 	})
 
 	RootCmd.PersistentFlags().StringP("data-dir", "d", "./fire-data", "Path to data storage for all components of dfuse")
@@ -61,10 +61,10 @@ func Main() {
 		return nil
 	}
 
-	derr.Check("acme-blockchain", RootCmd.Execute())
+	derr.Check("arweave-blockchain", RootCmd.Execute())
 }
 
-var startCmdExample = `fireacme start mindreader`
+var startCmdExample = `firearweave start mindreader`
 var startCmdHelpTemplate = `Usage:{{if .Runnable}}
   {{.UseLine}}{{end}} [all|command1 [command2...]]{{if gt (len .Aliases) 0}}
 
