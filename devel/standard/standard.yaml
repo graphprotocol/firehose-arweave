@@ -6,7 +6,7 @@ start:
   - relayer
   flags:
     # Specifies the path to the dummy chain binary is
-    mindreader-node-path: "/usr/local/bin/thegarii"
+    mindreader-node-path: "thegarii"
     # debugging
     mindreader-node-debug-deep-mind: true
     mindreader-node-log-to-zap: true
