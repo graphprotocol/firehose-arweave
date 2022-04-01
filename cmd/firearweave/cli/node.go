@@ -205,7 +205,7 @@ type nodeArgsByRole map[string]string
 
 func buildNodeArguments(nodeDataDir, nodeRole string, args string) ([]string, error) {
 	typeRoles := nodeArgsByRole{
-		"mindreader": "-B 20 console",
+		"mindreader": "-B 20",
 	}
 
 	argsString, ok := typeRoles[nodeRole]

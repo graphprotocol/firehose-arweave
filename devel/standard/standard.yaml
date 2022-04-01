@@ -11,7 +11,7 @@ start:
     mindreader-node-debug-deep-mind: true
     mindreader-node-log-to-zap: true
     # Indicates to the mindreader-node to skip writing individual one block files and merge the block data into 100-blocks merged files
-    mindreader-node-merge-and-store-directly: true
+    mindreader-node-merge-and-store-directly: false
     # Flags that will be added to the dummy chain process command
     mindreader-node-arguments: +--dm-enabled --block-rate=6
     # Once fully live with chain, those should be removed, they are used so that Firehose serves
