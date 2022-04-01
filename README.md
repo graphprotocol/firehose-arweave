@@ -4,6 +4,55 @@
 
 # Usage
 
+> NOTE
+>
+> this script will install rust and thegarii automatically.
+
+```
+./devel/standard/start.sh
+```
+
+# Environments of thegarii
+    
+| KEY          | DEFAULT_VALUE          | DESCRIPTION                                 |
+|--------------|------------------------|---------------------------------------------|
+| ENDPOINTS    | "https://arweave.net"  | for multiple endpoints, split them with ',' |
+| BATCH_BLOCKS | 50                     | how many blocks batch at one time           |
+| CONFIRMS     | 20                     | irreversibility condition                   |
+| PTR_PATH     | $APP_DATA/thegarii/ptr | the file stores the block ptr for polling   |
+| retry        | 10                     | retry times when failed on http requests    |
+| timeout      | 120_000                | timeout of http requests                    |
+
+
+for configuring these variables with arguments, see `thegarii -h`
+
+```
+thegaril 0.0.2
+info@chainsafe.io
+env arguments for CLI
+
+USAGE:
+    thegarii [FLAGS] [OPTIONS]
+
+FLAGS:
+    -d, --debug      Activate debug mode
+    -h, --help       Prints help information
+    -V, --version    Prints version information
+
+OPTIONS:
+    -B, --batch-blocks <batch-blocks>    how many blocks polling at one time
+    -b, --block-time <block-time>        time cost for producing a new block in arweave
+    -c, --confirms <confirms>            safe blocks against to reorg in polling
+    -D, --db-path <db-path>              storage db path ( only works with full features )
+    -e, --endpoints <endpoints>...       client endpoints
+    -g, --grpc-addr <grpc-addr>          grpc address
+    -p, --ptr-path <ptr-path>            block ptr file path
+    -r, --retry <retry>                  retry times when failed on http requests
+    -t, --timeout <timeout>              timeout of http requests
+
+```
+
+
 ## Release
 
 Use the `./bin/release.sh` Bash script to perform a new release. It will ask you questions
