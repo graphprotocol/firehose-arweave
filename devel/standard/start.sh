@@ -3,7 +3,7 @@
 ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 clean=
-sfnear="$ROOT/../firearweave"
+sfarweave="$ROOT/../firearweave"
 
 main() {
   pushd "$ROOT" &> /dev/null
@@ -24,7 +24,10 @@ main() {
     rm -rf fire-data &> /dev/null || true
   fi
 
-  exec $sfnear -c $(basename $ROOT).yaml start "$@"
+  # check if thegarii exists
+  check_thegarii
+
+  exec $sfarweave -c $(basename $ROOT).yaml start "$@"
 }
 
 usage_error() {
@@ -44,6 +47,26 @@ usage() {
   echo ""
   echo "Options"
   echo "    -c             Clean actual data directory first"
+}
+
+install_rust() {
+    if ! command -v cargo &> /dev/null
+    then
+        echo "rust toolchain not exists, installing rust..."
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+        source $HOME/.cargo/env
+        exit
+    fi
+}
+
+check_thegarii() {
+    if ! command -v thegarii &> /dev/null
+    then
+        install_rust
+        echo "thegarii has not been installed, installing thegarii..."
+        cargo install thegarii
+        exit
+    fi
 }
 
 main "$@"
