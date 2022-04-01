@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	pbcodec "github.com/ChainSafe/firehose-arweave/pb/cs/arweave/codec/v1"
+	pbcodec "github.com/ChainSafe/firehose-arweave/pb/sf/arweave/type/v1"
 	"github.com/dvsekhvalnov/jose2go/base64url"
 	"github.com/golang/protobuf/proto"
 	"go.uber.org/zap"

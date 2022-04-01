@@ -25,7 +25,7 @@ function main() {
   trap "cd \"$current_dir\"" EXIT
   pushd "$ROOT/pb" &> /dev/null
 
-  generate "cs/arweave/codec/v1/type.proto"
+  generate "sf/arweave/type/v1/type.proto"
 
   echo "generate.sh - `date` - `whoami`" > $ROOT/pb/last_generate.txt
   # echo "streamingfast/proto revision: `GIT_DIR=$PROTO/.git git rev-parse HEAD`" >> $ROOT/pb/last_generate.txt
