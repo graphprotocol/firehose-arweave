@@ -21,7 +21,7 @@ import (
 
 var rootLog, _ = logging.RootLogger("firearweave", "github.com/ChainSafe/firehose-arweave/cmd/firearweave/cli")
 
-var RootCmd = &cobra.Command{Use: "firearweave", Short: "Acme on StreamingFast"}
+var RootCmd = &cobra.Command{Use: "firearweave", Short: "Arweave on StreamingFast"}
 var allFlags = make(map[string]bool) // used as global because of async access to cobra init functions
 
 func Main() {
