@@ -1,4 +1,4 @@
-package cli
+package firearweave
 
 import (
 	"fmt"
