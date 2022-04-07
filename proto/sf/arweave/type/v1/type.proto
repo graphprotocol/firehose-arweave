@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package cs.arweave.codec.v1;
+package sf.arweave.type.v1;
 
 option go_package = "github.com/streamingfast/sf-ethereum/pb/sf/ethereum/codec/v1;pbcodec";
 

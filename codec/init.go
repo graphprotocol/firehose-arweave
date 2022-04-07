@@ -24,9 +24,13 @@ func init() {
 	bstream.GetBlockWriterFactory = bstream.BlockWriterFactoryFunc(blockWriterFactory)
 	bstream.GetBlockReaderFactory = bstream.BlockReaderFactoryFunc(blockReaderFactory)
 	bstream.GetBlockDecoder = bstream.BlockDecoderFunc(BlockDecoder)
-	// WARNING: We do not set this value anymore here. It is set in the `FirstStreamableBlock` constant located `cmd/firearweave/cli/constants.go:26`
-	//bstream.GetProtocolFirstStreamableBlock = 1
 	bstream.GetBlockWriterHeaderLen = 10
 	bstream.GetBlockPayloadSetter = bstream.MemoryBlockPayloadSetter
 	bstream.GetMemoizeMaxAge = 200 * 15 * time.Second
+
+	// We want to panic in here to enforce validation in any component that uses this package,
+	// instead of running validation in multiple places.
+	if err := bstream.ValidateRegistry(); err != nil {
+		panic(err)
+	}
 }

@@ -23,6 +23,10 @@ import (
 	"github.com/streamingfast/dbin"
 )
 
+const (
+	dbinContentType = "ARE" // Arweave
+)
+
 func blockWriterFactory(writer io.Writer) (bstream.BlockWriter, error) {
 	return NewBlockWriter(writer)
 }
@@ -34,7 +38,7 @@ type BlockWriter struct {
 
 func NewBlockWriter(writer io.Writer) (*BlockWriter, error) {
 	dbinWriter := dbin.NewWriter(writer)
-	err := dbinWriter.WriteHeader("NEA", 1)
+	err := dbinWriter.WriteHeader(dbinContentType, 1)
 	if err != nil {
 		return nil, fmt.Errorf("unable to write file header: %s", err)
 	}

@@ -35,15 +35,15 @@ type BlockReader struct {
 
 func NewBlockReader(reader io.Reader) (out *BlockReader, err error) {
 	dbinReader := dbin.NewReader(reader)
-	contentType, version, err := dbinReader.ReadHeader()
+	_, _, err = dbinReader.ReadHeader()
 	if err != nil {
 		return nil, fmt.Errorf("unable to read file header: %s", err)
 	}
 
-	if (contentType != "NEA" && contentType != "ETH") || version != 1 {
-		// TODO remove reference to ETH when we get rid of the block files produced before 2021-10-29 with wrong header
-		return nil, fmt.Errorf("reader expects block protocol NEA at version 1, got %s at version %d", contentType, version)
-	}
+	// if (contentType != "NEA" && contentType != "ETH") || version != 1 {
+	// 	// TODO remove reference to ETH when we get rid of the block files produced before 2021-10-29 with wrong header
+	// 	return nil, fmt.Errorf("reader expects block protocol NEA at version 1, got %s at version %d", contentType, version)
+	// }
 
 	return &BlockReader{
 		src: dbinReader,

@@ -25,10 +25,18 @@ func BlockFromProto(b *pbcodec.Block) (*bstream.Block, error) {
 		libNum = 0
 	}
 
+	var previousId string
+	if b.Height != 0 {
+		previousId = hex.EncodeToString(b.PreviousBlock)
+	} else {
+		var empty_hash [64]byte
+		previousId = hex.EncodeToString(empty_hash[:])
+	}
+
 	block := &bstream.Block{
-		Id:             hex.EncodeToString(b.Hash),
+		Id:             hex.EncodeToString(b.IndepHash),
 		Number:         b.Height,
-		PreviousId:     hex.EncodeToString(b.PreviousBlock),
+		PreviousId:     previousId,
 		Timestamp:      b.Timestamp.AsTime(),
 		LibNum:         libNum,
 		PayloadKind:    pbbstream.Protocol_UNKNOWN,
