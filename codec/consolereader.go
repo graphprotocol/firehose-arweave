@@ -181,13 +181,12 @@ func (r *ConsoleReader) block(params []string) (*pbcodec.Block, error) {
 
 	// decode bytes to Block
 	err = proto.Unmarshal(bytes, r.ctx.currentBlock)
-
-	if blockHeight != r.ctx.currentBlock.Height {
-		return nil, fmt.Errorf("block height does not match active block height, got block height %d but current is block height %d", blockHeight, r.ctx.currentBlock.Height)
-	}
-
 	if err != nil {
 		return nil, fmt.Errorf("invalid encoded block: %w", err)
+	}
+
+	if blockHeight != r.ctx.currentBlock.Height {
+		return nil, fmt.Errorf("block height %d from 'DMLOG <height> ...' does not match height %d from block's value", blockHeight, r.ctx.currentBlock.Height)
 	}
 
 	// logging
