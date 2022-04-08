@@ -79,7 +79,7 @@ func getMindreaderLogPlugin(
 	// tracker.AddGetter(bstream.NetworkLIBTarget, bstream.NetworkLIBBlockRefGetter(blockmetaAddr))
 
 	consoleReaderFactory := func(lines chan string) (mindreader.ConsolerReader, error) {
-		return codec.NewConsoleReader(lines, NodeRPCAddr)
+		return codec.NewConsoleReader(lines)
 	}
 
 	consoleReaderTransformer := func(obj interface{}) (*bstream.Block, error) {
