@@ -1,4 +1,4 @@
-package firearweave
+package cli
 
 const (
 	// Common ports
