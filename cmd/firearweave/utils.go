@@ -20,6 +20,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/streamingfast/cli"
 	"github.com/streamingfast/logging"
 	"go.uber.org/zap"
 )
@@ -30,7 +31,7 @@ func mustReplaceDataDir(dataDir, in string) string {
 		panic(fmt.Errorf("file path abs: %w", err))
 	}
 
-	in = strings.Replace(in, "{sf-data-dir}", d, -1)
+	in = strings.Replace(in, "{data-dir}", d, -1)
 	return in
 }
 
@@ -80,8 +81,12 @@ func MustReplaceDataDir(dataDir, in string) string {
 		panic(fmt.Errorf("file path abs: %w", err))
 	}
 
-	in = strings.Replace(in, "{sf-data-dir}", d, -1)
+	in = strings.Replace(in, "{data-dir}", d, -1)
 	return in
 }
 
 var DefaultLevelInfo = logging.LoggerDefaultLevel(zap.InfoLevel)
+
+func FlagDescription(in string, args ...interface{}) string {
+	return fmt.Sprintf(strings.Join(strings.Split(string(cli.Description(in)), "\n"), " "), args...)
+}

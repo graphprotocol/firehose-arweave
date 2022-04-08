@@ -75,10 +75,10 @@ func checkMergedBlocksE(cmd *cobra.Command, args []string) error {
 }
 
 func blockPrinter(block *bstream.Block) {
-	dummBlock := block.ToProtocol().(*pbcodec.Block)
-	fmt.Printf("Block %s, Prev: %s: %d timestamp\n",
+	protocolBlock := block.ToProtocol().(*pbcodec.Block)
+	fmt.Printf("Block %s, Prev: %s @ %s\n",
 		block.AsRef(),
 		block.PreviousRef(),
-		dummBlock.Timestamp,
+		protocolBlock.Timestamp.AsTime(),
 	)
 }
