@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package sf.arweave.type.v1;
 
-option go_package = "github.com/streamingfast/sf-ethereum/pb/sf/ethereum/codec/v1;pbcodec";
+option go_package = "github.com/ChainSafe/firehose-arweave/pb/sf/arweave/type/v1;pbcodec";
 
 import "google/protobuf/timestamp.proto";
 
