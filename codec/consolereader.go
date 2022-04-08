@@ -21,11 +21,10 @@ type ConsoleReader struct {
 	lines chan string
 	close func()
 
-	ctx  *parseCtx
 	done chan interface{}
 }
 
-func NewConsoleReader(lines chan string, rpcUrl string) (*ConsoleReader, error) {
+func NewConsoleReader(lines chan string) (*ConsoleReader, error) {
 	l := &ConsoleReader{
 		lines: lines,
 		close: func() {},
@@ -75,22 +74,6 @@ func (s *parsingStats) inc(key string) {
 	s.data[k] = value
 }
 
-type parseCtx struct {
-	currentBlock *pbcodec.Block
-
-	stats *parsingStats
-}
-
-func newContext(height uint64) *parseCtx {
-	return &parseCtx{
-		currentBlock: &pbcodec.Block{
-			Height: height,
-			Txs:    []*pbcodec.Transaction{},
-		},
-	}
-
-}
-
 func (r *ConsoleReader) Read() (out interface{}, err error) {
 	return r.next()
 }
@@ -113,17 +96,12 @@ func (r *ConsoleReader) next() (out interface{}, err error) {
 
 		switch tokens[0] {
 		case LogBlock:
-			return r.block(tokens[1:])
+			return r.readBlock(tokens[1:])
 		default:
 			if tracer.Enabled() {
 				zlog.Debug("skipping unknown deep mind log line", zap.String("line", line))
 			}
 			continue
-		}
-
-		if err != nil {
-			chunks := strings.SplitN(line, " ", 2)
-			return nil, fmt.Errorf("%s: %s (line %q)", chunks[0], err, line)
 		}
 	}
 
@@ -156,7 +134,7 @@ func (r *ConsoleReader) buildScanner(reader io.Reader) *bufio.Scanner {
 
 // Format:
 // DMLOG BLOCK <HEIGHT> <ENCODED_BLOCK>
-func (r *ConsoleReader) block(params []string) (*pbcodec.Block, error) {
+func (r *ConsoleReader) readBlock(params []string) (*pbcodec.Block, error) {
 	if err := validateChunk(params, 2); err != nil {
 		return nil, fmt.Errorf("invalid log line length: %w", err)
 	}
@@ -169,8 +147,6 @@ func (r *ConsoleReader) block(params []string) (*pbcodec.Block, error) {
 		return nil, fmt.Errorf("invalid block num: %w", err)
 	}
 
-	r.ctx = newContext(blockHeight)
-
 	// <ENCODED_BLOCK>
 	//
 	// hex decode block
@@ -180,24 +156,26 @@ func (r *ConsoleReader) block(params []string) (*pbcodec.Block, error) {
 	}
 
 	// decode bytes to Block
-	err = proto.Unmarshal(bytes, r.ctx.currentBlock)
+	block := &pbcodec.Block{}
+	err = proto.Unmarshal(bytes, block)
 	if err != nil {
 		return nil, fmt.Errorf("invalid encoded block: %w", err)
 	}
 
-	if blockHeight != r.ctx.currentBlock.Height {
-		return nil, fmt.Errorf("block height %d from 'DMLOG <height> ...' does not match height %d from block's value", blockHeight, r.ctx.currentBlock.Height)
+	if blockHeight != block.Height {
+		return nil, fmt.Errorf("block height %d from 'DMLOG <height> ...' does not match height %d from block's content", blockHeight, block.Height)
 	}
 
-	// logging
-	zlog.Debug("console reader read block",
-		zap.Uint64("height", r.ctx.currentBlock.Height),
-		zap.String("indep_hash", base64url.Encode(r.ctx.currentBlock.IndepHash)),
-		zap.String("prev_hash", base64url.Encode(r.ctx.currentBlock.PreviousBlock)),
-		zap.Int("trx_count", len(r.ctx.currentBlock.Txs)),
-	)
+	if tracer.Enabled() {
+		zlog.Debug("console reader read block",
+			zap.Uint64("height", block.Height),
+			zap.Stringer("indep_hash", base64Bytes(block.IndepHash)),
+			zap.Stringer("prev_hash", base64Bytes(block.PreviousBlock)),
+			zap.Int("trx_count", len(block.Txs)),
+		)
+	}
 
-	return r.ctx.currentBlock, nil
+	return block, nil
 }
 
 func validateChunk(params []string, count int) error {
@@ -205,4 +183,10 @@ func validateChunk(params []string, count int) error {
 		return fmt.Errorf("%d fields required but found %d", count, len(params))
 	}
 	return nil
+}
+
+type base64Bytes []byte
+
+func (b base64Bytes) String() string {
+	return base64url.Encode([]byte(b))
 }
