@@ -16,6 +16,7 @@ package cli
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -89,4 +90,22 @@ var DefaultLevelInfo = logging.LoggerDefaultLevel(zap.InfoLevel)
 
 func FlagDescription(in string, args ...interface{}) string {
 	return fmt.Sprintf(strings.Join(strings.Split(string(cli.Description(in)), "\n"), " "), args...)
+}
+
+func countBlocks(dataDir string) (count uint64) {
+	count = 0
+
+	// count oneBlocks
+	oneBlocks, err := ioutil.ReadDir(dataDir + "/storage/one-blocks")
+	if err == nil {
+		count += uint64(len(oneBlocks))
+	}
+
+	// count mergedBlocks
+	mergedBlocks, err := ioutil.ReadDir(dataDir + "/storage/merged-blocks")
+	if err == nil {
+		count += uint64(len(mergedBlocks)) * 100
+	}
+
+	return count
 }
