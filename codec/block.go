@@ -11,7 +11,7 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-const CONFIRMS uint64 = 20
+const CONFIRMS uint64 = 1
 
 func BlockFromProto(b *pbcodec.Block) (*bstream.Block, error) {
 	content, err := proto.Marshal(b)
