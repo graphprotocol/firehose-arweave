@@ -3,6 +3,7 @@ package codec
 import (
 	"encoding/hex"
 	"fmt"
+	"time"
 
 	pbcodec "github.com/ChainSafe/firehose-arweave/pb/sf/arweave/type/v1"
 	"github.com/streamingfast/bstream"
@@ -37,7 +38,7 @@ func BlockFromProto(b *pbcodec.Block) (*bstream.Block, error) {
 		Id:             hex.EncodeToString(b.IndepHash),
 		Number:         b.Height,
 		PreviousId:     previousId,
-		Timestamp:      b.Timestamp.AsTime(),
+		Timestamp:      time.UnixMilli(int64(b.Timestamp)),
 		LibNum:         libNum,
 		PayloadKind:    pbbstream.Protocol_UNKNOWN,
 		PayloadVersion: 1,

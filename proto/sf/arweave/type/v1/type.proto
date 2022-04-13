@@ -4,8 +4,6 @@ package sf.arweave.type.v1;
 
 option go_package = "github.com/ChainSafe/firehose-arweave/pb/sf/arweave/type/v1;pbcodec";
 
-import "google/protobuf/timestamp.proto";
-
 message Block {
   // Firehose block version (unrelated to Arweave block version)
   uint32 ver = 1;
@@ -16,11 +14,9 @@ message Block {
   // `indep_hash` of the previous block in the weave
   bytes previous_block = 4;
   // POSIX time of block discovery
-  google.protobuf.Timestamp timestamp = 5;
-
+  uint64 timestamp = 5;
   // POSIX time of the last difficulty retarget
-  google.protobuf.Timestamp last_retarget = 6;
-
+  uint64 last_retarget = 6;
   // Mining difficulty; the number `hash` must be greater than.
   string diff = 7;
   // How many blocks have passed since the genesis block
@@ -36,7 +32,7 @@ message Block {
   // of the last transactions posted by them; if any.
   bytes wallet_list = 12;
   // (string or) Address of the account to receive the block rewards. Can also be unclaimed which is encoded as a null byte
-  string reward_addr = 13;
+  bytes reward_addr = 13;
   // Tags that a block producer can add to a block
   repeated Tag tags = 14;
   // Size of reward pool
@@ -97,7 +93,7 @@ message Transaction {
   // Size in bytes of the transaction data.
   string data_size = 9;
   // The Merkle root of the Merkle tree of data chunks.
-  string data_root = 10;
+  bytes data_root = 10;
   // The signature.
   bytes signature = 11;
   // The fee in Winstons.

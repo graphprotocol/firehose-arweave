@@ -2,6 +2,7 @@ package cli
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 	"time"
 
@@ -96,11 +97,16 @@ func nodeFactoryFunc(flagPrefix, kind string) func(*launcher.Runtime) (launcher.
 		logToZap := viper.GetBool(flagPrefix + "log-to-zap")
 		shutdownDelay := viper.GetDuration("common-system-shutdown-signal-delay") // we reuse this global value
 		httpAddr := viper.GetString(flagPrefix + "manager-api-addr")
+		batchStartBlockNum := viper.GetUint64("mindreader-node-start-block-num")
+		batchStopBlockNum := viper.GetUint64("mindreader-node-stop-block-num")
 
 		arguments := viper.GetString(flagPrefix + "arguments")
 		nodeArguments, err := buildNodeArguments(
+			sfDataDir,
 			nodeDataDir,
 			kind,
+			batchStartBlockNum,
+			batchStopBlockNum,
 			arguments,
 		)
 		if err != nil {
@@ -152,8 +158,6 @@ func nodeFactoryFunc(flagPrefix, kind string) func(*launcher.Runtime) (launcher.
 		gprcListenAdrr := viper.GetString("mindreader-node-grpc-listen-addr")
 		mergeAndStoreDirectly := viper.GetBool("mindreader-node-merge-and-store-directly")
 		mergeThresholdBlockAge := viper.GetDuration("mindreader-node-merge-threshold-block-age")
-		batchStartBlockNum := viper.GetUint64("mindreader-node-start-block-num")
-		batchStopBlockNum := viper.GetUint64("mindreader-node-stop-block-num")
 		waitTimeForUploadOnShutdown := viper.GetDuration("mindreader-node-wait-upload-complete-on-shutdown")
 		oneBlockFileSuffix := viper.GetString("mindreader-node-one-block-suffix")
 		blocksChanCapacity := viper.GetInt("mindreader-node-blocks-chan-capacity")
@@ -212,9 +216,20 @@ func (b *bootstrapper) Bootstrap() error {
 
 type nodeArgsByRole map[string]string
 
-func buildNodeArguments(nodeDataDir, nodeRole string, args string) ([]string, error) {
+func buildNodeArguments(dataDir, nodeDataDir, nodeRole string, start, stop uint64, args string) ([]string, error) {
+	thegariiArgs := []string{"-B", "5", "console"}
+	if start != 0 {
+		thegariiArgs = append(thegariiArgs, []string{"-s", strconv.FormatUint(start, 10)}...)
+	} else {
+		thegariiArgs = append(thegariiArgs, []string{"-s", strconv.FormatUint(countBlocks(dataDir), 10)}...)
+	}
+
+	if stop != 0 {
+		thegariiArgs = append(thegariiArgs, []string{"-e", strconv.FormatUint(stop, 10)}...)
+	}
+
 	typeRoles := nodeArgsByRole{
-		"mindreader": "-B 1",
+		"mindreader": strings.Join(thegariiArgs, " "),
 	}
 
 	argsString, ok := typeRoles[nodeRole]
@@ -230,8 +245,8 @@ func buildNodeArguments(nodeDataDir, nodeRole string, args string) ([]string, er
 		argsString = args
 	}
 
-	argsString = strings.Replace(argsString, "{node-data-dir}", nodeDataDir, -1)
 	fmt.Println(argsString)
+	argsString = strings.Replace(argsString, "{node-data-dir}", nodeDataDir, -1)
 	argsSlice := strings.Fields(argsString)
 	return argsSlice, nil
 }

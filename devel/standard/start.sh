@@ -22,7 +22,6 @@ main() {
 
   if [[ $clean == "true" ]]; then
     rm -rf fire-data &> /dev/null || true
-    clean_thegarii
   fi
 
   # check if thegarii exists
@@ -56,27 +55,9 @@ install_rust() {
         echo "rust toolchain not exists, installing rust..."
         curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
         source $HOME/.cargo/env
-        exit
     fi
 }
 
-clean_thegarii() {
-  data_folder=""
-
-  if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    # FIXME: What is the shared path on Unix?
-    data_folder="$HOME/.thegarii"
-  elif [[ "$OSTYPE" == "darwin"* ]]; then
-    data_folder="$HOME/Library/Application Support/thegarii"
-  else
-    echo "$OSTYPE is not supported"
-    exit 1
-  fi
-
-  if [[ -d "$data_folder" ]]; then
-    rm -rf "$data_folder"
-  fi
-}
 
 check_thegarii() {
     if ! command -v thegarii &> /dev/null
@@ -84,7 +65,6 @@ check_thegarii() {
         install_rust
         echo "thegarii has not been installed, installing thegarii..."
         cargo install thegarii
-        exit
     fi
 }
 
