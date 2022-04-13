@@ -217,7 +217,7 @@ func (b *bootstrapper) Bootstrap() error {
 type nodeArgsByRole map[string]string
 
 func buildNodeArguments(dataDir, nodeDataDir, nodeRole string, start, stop uint64, args string) ([]string, error) {
-	thegariiArgs := []string{"-B", "5", "console"}
+	thegariiArgs := []string{"-B", "20", "console"}
 	if start != 0 {
 		thegariiArgs = append(thegariiArgs, []string{"-s", strconv.FormatUint(start, 10)}...)
 	} else {
