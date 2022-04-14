@@ -5,7 +5,7 @@ start:
   - mindreader-node
   - firehose
   flags:
-    common-blockstream-addr:
+    common-blockstream-addr: "localhost:16011"
     # Specifies the path to the dummy chain binary is
     mindreader-node-path: "thegarii"
     # debugging
