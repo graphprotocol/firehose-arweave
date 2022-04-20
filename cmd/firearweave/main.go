@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/streamingfast/firehose-arweave/cmd/firearweave/cli"
+	"github.com/ChainSafe/firehose-arweave/cmd/firearweave/cli"
 )
 
 // Commit sha1 value, injected via go build `ldflags` at build time
