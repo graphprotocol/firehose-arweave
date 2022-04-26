@@ -19,7 +19,6 @@ require (
 	github.com/streamingfast/dmetrics v0.0.0-20220307162521-2389094ab4a1
 	github.com/streamingfast/dstore v0.1.1-0.20220315134935-980696943a79
 	github.com/streamingfast/firehose v0.1.1-0.20220307162825-0f43305f7436
-	github.com/streamingfast/firehose-arweave v0.0.0-00010101000000-000000000000
 	github.com/streamingfast/logging v0.0.0-20220304214715-bc750a74b424
 	github.com/streamingfast/merger v0.0.3-0.20220318152213-9ab5185b44e8
 	github.com/streamingfast/node-manager v0.0.2-0.20220405231057-da9a898ad97e
@@ -33,5 +32,3 @@ require (
 )
 
 replace github.com/ShinyTrinkets/overseer => github.com/streamingfast/overseer v0.2.1-0.20210326144022-ee491780e3ef
-
-replace github.com/streamingfast/firehose-arweave => /home/clearloop/firehose-arweave
