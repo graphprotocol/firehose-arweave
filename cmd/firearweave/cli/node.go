@@ -99,12 +99,14 @@ func nodeFactoryFunc(flagPrefix, kind string) func(*launcher.Runtime) (launcher.
 		httpAddr := viper.GetString(flagPrefix + "manager-api-addr")
 		batchStartBlockNum := viper.GetUint64("mindreader-node-start-block-num")
 		batchStopBlockNum := viper.GetUint64("mindreader-node-stop-block-num")
+		endpoints := viper.GetStringSlice("mindreader-node-endpoints")
 
 		arguments := viper.GetString(flagPrefix + "arguments")
 		nodeArguments, err := buildNodeArguments(
 			sfDataDir,
 			nodeDataDir,
 			kind,
+			endpoints,
 			batchStartBlockNum,
 			batchStopBlockNum,
 			arguments,
@@ -216,8 +218,16 @@ func (b *bootstrapper) Bootstrap() error {
 
 type nodeArgsByRole map[string]string
 
-func buildNodeArguments(dataDir, nodeDataDir, nodeRole string, start, stop uint64, args string) ([]string, error) {
+func buildNodeArguments(dataDir, nodeDataDir, nodeRole string, endpoints []string, start, stop uint64, args string) ([]string, error) {
 	thegariiArgs := []string{"-d", "-B", "20", "console", "-f"}
+	if len(endpoints) > 0 {
+		setEndpoints := append([]string{"-e"}, endpoints...)
+		thegariiArgs = append(setEndpoints, thegariiArgs...)
+	} else {
+		endpoints = []string{"-e", "https://arweave.net"}
+		thegariiArgs = append(endpoints, thegariiArgs...)
+	}
+
 	if start != 0 {
 		thegariiArgs = append(thegariiArgs, []string{"-s", strconv.FormatUint(start, 10)}...)
 	} else {
