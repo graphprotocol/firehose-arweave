@@ -6,7 +6,6 @@ COPY . firehose-arweave
 RUN --mount=type=cache,target=/var/cache/apk \
     --mount=type=cache,target=/go/pkg \
     cd firehose-arweave \
-    && sed -i 's/\/home\/clearloop/\/go/g' go.mod \
     && go install -v -ldflags "-X main.Version=$version -X main.Commit=`git rev-list -1 HEAD`" \
     ./cmd/firearweave
 
