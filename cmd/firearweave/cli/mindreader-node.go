@@ -82,8 +82,8 @@ func getMindreaderLogPlugin(
 		return codec.NewConsoleReader(lines)
 	}
 
-	consoleReaderTransformer := func(obj interface{}) (*bstream.Block, error) {
-		blk, ok := obj.(*pbcodec.Block)
+	consoleReaderTransformer := func(obj *bstream.Block) (*bstream.Block, error) {
+		blk, ok := obj.ToProtocol().(*pbcodec.Block)
 		if !ok {
 			return nil, fmt.Errorf("expected *pbcodec.Block, got %T", obj)
 		}

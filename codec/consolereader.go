@@ -12,6 +12,7 @@ import (
 	pbcodec "github.com/ChainSafe/firehose-arweave/pb/sf/arweave/type/v1"
 	"github.com/dvsekhvalnov/jose2go/base64url"
 	"github.com/golang/protobuf/proto"
+	"github.com/streamingfast/bstream"
 	"go.uber.org/zap"
 )
 
@@ -74,7 +75,7 @@ func (s *parsingStats) inc(key string) {
 	s.data[k] = value
 }
 
-func (r *ConsoleReader) Read() (out interface{}, err error) {
+func (r *ConsoleReader) ReadBlock() (out *bstream.Block, err error) {
 	return r.next()
 }
 
@@ -83,7 +84,7 @@ const (
 	LogBlock  = "BLOCK"
 )
 
-func (r *ConsoleReader) next() (out interface{}, err error) {
+func (r *ConsoleReader) next() (out *bstream.Block, err error) {
 	for line := range r.lines {
 		if !strings.HasPrefix(line, LogPrefix) {
 			continue
@@ -96,7 +97,13 @@ func (r *ConsoleReader) next() (out interface{}, err error) {
 
 		switch tokens[0] {
 		case LogBlock:
-			return r.readBlock(tokens[1:])
+			block, err := r.readBlock(tokens[1:])
+			if err != nil {
+				return nil, fmt.Errorf("read block: %w", err)
+			}
+
+			return BlockFromProto(block)
+
 		default:
 			if tracer.Enabled() {
 				zlog.Debug("skipping unknown deep mind log line", zap.String("line", line))
