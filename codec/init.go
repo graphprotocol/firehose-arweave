@@ -15,9 +15,15 @@
 package codec
 
 import (
+	"fmt"
+	"io"
 	"time"
 
 	"github.com/streamingfast/bstream"
+)
+
+const (
+	dbinContentType = "ARE" // Arweave
 )
 
 func init() {
@@ -33,4 +39,18 @@ func init() {
 	if err := bstream.ValidateRegistry(); err != nil {
 		panic(err)
 	}
+}
+
+func blockReaderFactory(reader io.Reader) (bstream.BlockReader, error) {
+	return bstream.NewDBinBlockReader(reader, func(contentType string, version int32) error {
+		if contentType != dbinContentType && version != 1 {
+			return fmt.Errorf("reader only knows about %s block kind at version 1, got %s at version %d", dbinContentType, contentType, version)
+		}
+
+		return nil
+	})
+}
+
+func blockWriterFactory(writer io.Writer) (bstream.BlockWriter, error) {
+	return bstream.NewDBinBlockWriter(writer, dbinContentType, 1)
 }
