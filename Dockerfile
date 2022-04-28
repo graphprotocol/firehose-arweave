@@ -8,7 +8,7 @@ RUN --mount=type=cache,target=/var/cache/apk \
     cd firehose-arweave \
     && rm -rf .git \
     && git init \
-    && go install -v -ldflags "-X main.Version=$version -X main.Commit=`git rev-list -1 HEAD`" \
+    && go install -v -ldflags "-X main.Version=$version" \
     ./cmd/firearweave
 
 # thegarii builder
@@ -31,4 +31,3 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 ENTRYPOINT ["firearweave", "-c", "config.yaml", "start"]
-
