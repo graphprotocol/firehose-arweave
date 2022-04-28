@@ -6,6 +6,8 @@ COPY . firehose-arweave
 RUN --mount=type=cache,target=/var/cache/apk \
     --mount=type=cache,target=/go/pkg \
     cd firehose-arweave \
+    && rm -rf .git \
+    && git init \
     && go install -v -ldflags "-X main.Version=$version -X main.Commit=`git rev-list -1 HEAD`" \
     ./cmd/firearweave
 
