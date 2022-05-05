@@ -220,6 +220,11 @@ type nodeArgsByRole map[string]string
 
 func buildNodeArguments(dataDir, nodeDataDir, nodeRole string, endpoints []string, start, stop uint64, args string) ([]string, error) {
 	thegariiArgs := []string{"-d", "-B", "20", "console", "-f"}
+
+	// append path of ptr_file
+	thegariiArgs = append([]string{"-p", dataDir + "/arweave.ptr"}, thegariiArgs...)
+
+	// append endpoints
 	if len(endpoints) > 0 {
 		setEndpoints := append([]string{"-e"}, endpoints...)
 		thegariiArgs = append(setEndpoints, thegariiArgs...)
@@ -228,12 +233,12 @@ func buildNodeArguments(dataDir, nodeDataDir, nodeRole string, endpoints []strin
 		thegariiArgs = append(endpoints, thegariiArgs...)
 	}
 
+	// append start_block_number
 	if start != 0 {
 		thegariiArgs = append(thegariiArgs, []string{"-s", strconv.FormatUint(start, 10)}...)
-	} else {
-		thegariiArgs = append(thegariiArgs, []string{"-s", strconv.FormatUint(countBlocks(dataDir), 10)}...)
 	}
 
+	// append end_block_number
 	if stop != 0 {
 		thegariiArgs = append(thegariiArgs, []string{"-e", strconv.FormatUint(stop, 10)}...)
 	}
