@@ -19,6 +19,8 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"sort"
+	"strconv"
 	"strings"
 
 	"github.com/streamingfast/cli"
@@ -94,18 +96,60 @@ func FlagDescription(in string, args ...interface{}) string {
 
 func countBlocks(dataDir string) (count uint64) {
 	count = 0
+	oneBlocksDir := dataDir + "/storage/one-blocks"
+	mergedBlocksDir := dataDir + "/storage/merged-blocks"
 
 	// count oneBlocks
-	oneBlocks, err := ioutil.ReadDir(dataDir + "/storage/one-blocks")
+	oneBlocks, err := ioutil.ReadDir(oneBlocksDir)
 	if err == nil {
 		count += uint64(len(oneBlocks))
 	}
 
 	// count mergedBlocks
-	mergedBlocks, err := ioutil.ReadDir(dataDir + "/storage/merged-blocks")
+	mergedBlocks, err := ioutil.ReadDir(mergedBlocksDir)
 	if err == nil {
 		count += uint64(len(mergedBlocks)) * 100
 	}
 
-	return count
+	// try get last block number from one blocks and merged blocks
+	lastBlock := max(lastBlockIn(oneBlocks), lastBlockIn(mergedBlocks)+100)
+	if lastBlock > count {
+		count = lastBlock + 1
+	}
+
+	return
+}
+
+// compute the last block number from filenames
+func lastBlockIn(blocks []os.FileInfo) (last uint64) {
+	last = 0
+	sort.Slice(blocks, func(i, j int) bool {
+		return blocks[i].Name() < blocks[j].Name()
+	})
+
+	blocksLen := len(blocks)
+	if blocksLen == 0 {
+		return
+	}
+
+	// try get last blocks number
+	lastBlockFile := blocks[blocksLen-1].Name()
+	parts := strings.Split(lastBlockFile, "-")
+	if len(parts) > 0 {
+		lastBlock, err := strconv.ParseUint(parts[0], 10, 64)
+		if err == nil && lastBlock > last {
+			last = lastBlock
+		}
+	}
+
+	return
+}
+
+// returns the larger of x or y.
+func max(x, y uint64) uint64 {
+	if x < y {
+		return y
+	}
+
+	return x
 }

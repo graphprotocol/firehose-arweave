@@ -2,6 +2,7 @@ package cli
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -234,8 +235,12 @@ func buildNodeArguments(dataDir, nodeDataDir, nodeRole string, endpoints []strin
 	}
 
 	// append start_block_number
-	if start != 0 {
-		thegariiArgs = append(thegariiArgs, []string{"-s", strconv.FormatUint(start, 10)}...)
+	if _, err := os.Stat(dataDir + "/arweave.ptr"); err != nil {
+		if start != 0 {
+			thegariiArgs = append(thegariiArgs, []string{"-s", strconv.FormatUint(start, 10)}...)
+		} else {
+			thegariiArgs = append(thegariiArgs, []string{"-s", strconv.FormatUint(countBlocks(dataDir), 10)}...)
+		}
 	}
 
 	// append end_block_number
